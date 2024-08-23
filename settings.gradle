@@ -16,8 +16,86 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url "https://jitpack.io" }
+    }
+
+    versionCatalogs {
+        libs {
+            // base
+            library("androidx-core-ktx", "androidx.core:core-ktx:1.9.0")
+            library("androidx-appcompat", "androidx.appcompat:appcompat:1.3.1")
+            library("android-material", "com.google.android.material:material:1.4.0")
+
+            library("androidx-lifecycle-runtime", "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+            library("androidx-lifecycle-compose", "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
+            library("androidx-activity-compose", "androidx.activity:activity-compose:1.4.0")
+
+            // network
+            version("retrofit", "2.9.0")
+            library("retrofit-coverter", "com.squareup.retrofit2", "converter-gson").versionRef("retrofit")
+            library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("retrofit")
+            library("gson", "com.google.code.gson:gson:2.8.6")
+
+            // navigation
+            library("navigation-compose", "androidx.navigation:navigation-compose:2.5.0")
+
+            // foundation
+            library("compose-foundation", "androidx.compose.foundation:foundation:1.4.0")
+
+            // hilt
+            version("hilt", "2.48")
+            library("hilt", "com.google.dagger", "hilt-android").versionRef("hilt")
+            library("hilt-compile", "com.google.dagger", "hilt-android-compiler").versionRef("hilt")
+            bundle("hilt", ["hilt", "hilt-compile"])
+            library("hilt-navigation", "androidx.hilt:hilt-navigation-compose:1.0.0")
+//            library("hilt-lifecycle-viewmodel", "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+            library("androidx-hilt-compiler", "androidx.hilt:hilt-compiler:1.0.0")
+
+            // coil
+            library("coil-compose", "io.coil-kt:coil-compose:2.0.0-rc03")
+            library("coil-zoomable-image", "me.saket.telephoto:zoomable-image-coil:0.11.2")
+
+            // data store
+            version("data-store", "1.0.0")
+            library("data-store", "androidx.datastore", "datastore-preferences").versionRef("data-store")
+            library("data-store-core", "androidx.datastore", "datastore-preferences-core").versionRef("data-store")
+            bundle("data-store", ["data-store", "data-store-core"])
+
+            // compose accompanist
+            // webview
+            library("webview", "com.google.accompanist:accompanist-webview:0.33.1-alpha")
+            // flowlayout
+            library("flowlayout", "com.google.accompanist:accompanist-flowlayout:0.24.7-alpha")
+            // swiperefresh
+            library("swiperefresh", "com.google.accompanist:accompanist-swiperefresh:0.25.1")
+            // permission
+            library("permission", "com.google.accompanist:accompanist-permissions:0.27.0")
+            // pagerlayout
+            library("pagerlayout", "com.google.accompanist:accompanist-pager:0.24.8-beta")
+            // system-ui
+            library("systemuicontroller", "com.google.accompanist:accompanist-systemuicontroller:0.23.1")
+
+            // utils
+            library("blankjutils", "com.blankj:utilcodex:1.31.0")
+        }
+
+        testLibs {
+            library('junit', 'junit:junit:4.13.2')
+            library('junit-ext', 'androidx.test.ext:junit:1.1.3')
+            library('junit-espresso', 'androidx.test.espresso:espresso-core:3.4.0')
+
+            version("compose-test", "1.0.1")
+            library("ui-test-junit", "androidx.compose.ui", "ui-test-junit4").versionRef("compose-test")
+            library("ui-tooling", "androidx.compose.ui", "ui-tooling").versionRef("compose-test")
+            bundle("compose", ["ui-test-junit", "ui-tooling"])
+        }
     }
 }
 
 rootProject.name = "GitHubDemo"
 include ':app'
+include ':common'

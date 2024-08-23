@@ -1,0 +1,108 @@
+plugins {
+    alias(libs.plugins.android.library)
+    id ('org.jetbrains.kotlin.android')
+    id ("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+}
+
+android {
+    namespace 'com.example.common'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 29
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.1'
+    }
+}
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    // 解决preview无法显示的问题
+    debugApi "androidx.customview:customview:1.2.0-alpha01"
+    debugApi "androidx.customview:customview-poolingcontainer:1.0.0-alpha01"
+
+    // base
+    api libs.androidx.core.ktx
+
+    api libs.androidx.appcompat
+    api libs.android.material
+
+    def composeBom = platform('androidx.compose:compose-bom:2024.03.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    api 'androidx.compose.material:material'
+    api 'androidx.compose.ui:ui'
+
+    api libs.androidx.lifecycle.runtime
+    api libs.androidx.lifecycle.compose
+    api libs.androidx.activity.compose
+
+    // network
+    api libs.retrofit
+    api libs.retrofit.coverter
+    api libs.gson
+
+    // base test
+    testApi testLibs.junit
+    androidTestApi testLibs.junit.ext
+    androidTestApi testLibs.junit.espresso
+    androidTestApi testLibs.ui.test.junit
+    debugApi testLibs.ui.tooling
+
+    // foundation
+    api libs.compose.foundation
+
+    // navigation
+    api libs.navigation.compose
+
+    // livedata
+    // api libs.livedata.compose
+
+    // coil
+    api libs.coil.compose
+    api libs.coil.zoomable.image
+
+    // data store
+    api libs.data.store
+    api libs.data.store.core
+
+    // compose accompanist
+    api libs.webview
+    api libs.flowlayout
+    api libs.swiperefresh
+    api libs.permission
+    api libs.pagerlayout
+    api libs.systemuicontroller
+
+    api libs.blankjutils
+
+    // hilt
+    implementation libs.hilt
+    kapt libs.hilt.compile
+    implementation libs.hilt.navigation
+}
