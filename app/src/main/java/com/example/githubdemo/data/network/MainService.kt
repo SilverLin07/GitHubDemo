@@ -1,14 +1,18 @@
 package com.example.githubdemo.data.network
 
 import com.example.githubdemo.data.bean.AccessTokenBean
+import com.example.githubdemo.data.bean.Issue
+import com.example.githubdemo.data.bean.IssueResponse
 import com.example.githubdemo.data.bean.RepositoryItem
 import com.example.githubdemo.data.bean.SearchRepositoriesRst
 import com.example.githubdemo.data.bean.UserInfoBean
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
@@ -43,4 +47,11 @@ interface MainService {
 
   @GET("user/starred")
   suspend fun getMyStarred(@Query(value = "page") page: Int): List<RepositoryItem>
+
+  @POST("repos/{owner}/{repo}/issues")
+  suspend fun createIssue(
+    @Path("owner") owner: String,
+    @Path("repo") repo: String,
+    @Body issue: Issue
+  ): IssueResponse
 }

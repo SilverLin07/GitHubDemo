@@ -1,13 +1,20 @@
 package com.example.githubdemo.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.example.common.base.BaseViewModel
 import com.example.common.base.Reducer
+import com.example.common.util.DataStoreUtils
+import com.example.common.util.eventbus.AuthEvent
+import com.example.common.util.eventbus.EventBus
 import com.example.githubdemo.data.network.MainService
 import com.example.githubdemo.model.MineEvent
 import com.example.githubdemo.model.SearchEvent
 import com.example.githubdemo.model.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -18,7 +25,7 @@ import javax.inject.Inject
  * @Datetime 2024-08-23 17:29
  */
 @HiltViewModel
-class SearchViewModel @Inject constructor(val service: MainService): BaseViewModel<SearchState, SearchEvent>() {
+class SearchViewModel @Inject constructor(val service: MainService, private val eventBus: EventBus): BaseViewModel<SearchState, SearchEvent>() {
   override val state: StateFlow<SearchState>
     get() = reducer.state
 
@@ -51,7 +58,24 @@ class SearchViewModel @Inject constructor(val service: MainService): BaseViewMod
             setState(oldState.copy(repositoryList = newList))
           }
         }
+        is SearchEvent.SetShowIssues -> {
+          setState(oldState.copy(showIssues = event.showIssues))
+        }
       }
+    }
+  }
+
+  init {
+    viewModelScope.launch {
+      eventBus.events.filter { it is AuthEvent }.collectLatest {
+        sendEvent(SearchEvent.SetShowIssues(true))
+      }
+    }
+
+    if (DataStoreUtils.readStringData(DataStoreUtils.ACCESS_TOKEN, "").isNotBlank()) {
+      sendEvent(SearchEvent.SetShowIssues(true))
+    } else {
+      sendEvent(SearchEvent.SetShowIssues(false))
     }
   }
 

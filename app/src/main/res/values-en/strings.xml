@@ -3,6 +3,8 @@
     <string name="explore">explore</string>
     <string name="search">search</string>
     <string name="mine">mine</string>
+    <string name="edit_issues">Edit issues</string>
+    <string name="commit">Commit</string>
     <string name="settings">settings</string>
     <string name="starred">Starred</string>
     <string name="logout">Logout</string>

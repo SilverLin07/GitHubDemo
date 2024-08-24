@@ -3,6 +3,8 @@
     <string name="explore">探索</string>
     <string name="search">搜索</string>
     <string name="mine">我的</string>
+    <string name="edit_issues">提交 issues</string>
+    <string name="commit">提交</string>
     <string name="settings">设置</string>
     <string name="starred">收藏</string>
     <string name="logout">退出登录</string>

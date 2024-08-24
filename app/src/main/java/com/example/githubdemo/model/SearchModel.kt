@@ -17,9 +17,10 @@ sealed class SearchEvent: UIEvent {
   data class SetTabLanguage(val tabLanguage: String): SearchEvent()
   data class SetTabSort(val tabSort: String): SearchEvent()
   data class SetRepositoryList(val repositoryList: List<RepositoryItem>, val page: Int): SearchEvent()
+  data class SetShowIssues(val showIssues: Boolean): SearchEvent()
 }
 data class SearchState(val loading: Boolean = false,
                        val showRowFilterType: Int = -1,
                        val language: String = "Languages",
                        val sortBy: String = "Sort by",
-                       val repositoryList: List<RepositoryItem> ?= null): UIState
+                       val repositoryList: List<RepositoryItem> ?= null, val showIssues: Boolean = false): UIState

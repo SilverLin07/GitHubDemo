@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -37,10 +38,11 @@ import com.example.githubdemo.ui.theme.Purple40
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SearchRepositoryItemView(item: RepositoryItem, onClick: () -> Unit = {}) {
+fun SearchRepositoryItemView(item: RepositoryItem, onClick: () -> Unit = {}, showIssues: Boolean = false, onClickIssues: () -> Unit = {}) {
   Row(modifier = Modifier
     .padding(10.dp)
-    .fillMaxWidth().noRippleClickable {
+    .fillMaxWidth()
+    .noRippleClickable {
       onClick()
     }) {
     AsyncImage(model = item.owner.avatarUrl, modifier = Modifier
@@ -48,7 +50,24 @@ fun SearchRepositoryItemView(item: RepositoryItem, onClick: () -> Unit = {}) {
       .size(60.dp), contentDescription = null)
     Spacer(modifier = Modifier.width(20.dp))
     Column {
-      Text(text = item.fullName, fontSize = 14.sp)
+      Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(text = item.fullName, fontSize = 14.sp, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        if (showIssues) {
+          Spacer(modifier = Modifier.width(10.dp))
+          Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.noRippleClickable {
+              onClickIssues()
+            }) {
+            Image(
+              painter = painterResource(id = R.drawable.ic_issues),
+              contentDescription = null,
+              modifier = Modifier.size(20.dp)
+            )
+            Text(text = "issues", fontSize = 12.sp, color = FontHint)
+          }
+        }
+      }
       Spacer(modifier = Modifier.height(16.dp))
       FlowRow(verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.ic_star_small), modifier = Modifier.size(16.dp), contentDescription = null)

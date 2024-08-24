@@ -6,6 +6,8 @@ object Router {
   const val SEARCH_PAGE = "SEARCH_PAGE"
   const val MINE_PAGE = "MINE_PAGE"
   const val STARRED_PAGE = "STARRED_PAGE"
+  const val EDIT_ISSUES_BASE_PAGE = "EDIT_ISSUES_PAGE"
+  const val EDIT_ISSUES_PAGE = "EDIT_ISSUES_PAGE/{owner}/{repo}"
 
   const val MINE_SETTING_PAGE = "MINE_SETTING_PAGE"
 

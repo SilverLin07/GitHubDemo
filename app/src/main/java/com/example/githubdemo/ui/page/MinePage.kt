@@ -69,9 +69,11 @@ fun MinePage(viewModel: MineViewModel, navController: NavController, paddingValu
     state.repositoryList?.let { list ->
       LazyColumn(state = listState) {
         items(list) {
-          SearchRepositoryItemView(item = it) {
+          SearchRepositoryItemView(item = it, onClick =  {
             navController.navigate("${Router.WEB_BASE_PAGE}/${Uri.encode(it.htmlUrl)}")
-          }
+          }, showIssues = true, onClickIssues = {
+            navController.navigate("${Router.EDIT_ISSUES_BASE_PAGE}/${it.owner.login}/${it.name}")
+          })
         }
       }
     }

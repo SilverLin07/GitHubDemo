@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -103,13 +104,16 @@ fun SearchPage(viewModel: SearchViewModel, navController: NavController, padding
       .align(Alignment.CenterHorizontally)
       .padding(horizontal = 10.dp)
       .fillMaxWidth()
-      .height(34.dp), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), bgColor = BgGray,
+      .height(34.dp), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), bgColor = BgGray,
       radius = 18.dp, text = input,
       hintWord = stringResource(id = R.string.search), onStopInput = {
         viewModel.search(input.value, reset = true)
       }, onCancelClick = {
       input.value = ""
-    })
+    }, keyboardActions = KeyboardActions(onSearch = {
+        viewModel.search(input.value, reset = true)
+      })
+    )
 
     Spacer(modifier = Modifier.height(20.dp))
     SearchRowFilter(state.language, state.sortBy, tabIndex = filterTabIndex, onClick = {
@@ -120,9 +124,11 @@ fun SearchPage(viewModel: SearchViewModel, navController: NavController, padding
       state.repositoryList?.let { list ->
         LazyColumn(state = listState) {
           items(list) {
-            SearchRepositoryItemView(item = it) {
+            SearchRepositoryItemView(item = it, onClick = {
               navController.navigate("${Router.WEB_BASE_PAGE}/${Uri.encode(it.htmlUrl)}")
-            }
+            }, showIssues = state.showIssues, onClickIssues = {
+              navController.navigate("${Router.EDIT_ISSUES_BASE_PAGE}/${it.owner.login}/${it.name}")
+            })
           }
         }
       }

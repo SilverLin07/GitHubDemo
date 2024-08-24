@@ -29,7 +29,7 @@ import javax.inject.Inject
  * @Datetime 2024-08-23 13:52
  */
 @HiltViewModel
-class MineViewModel @Inject constructor(val service: MainService, val eventBus: EventBus): BaseViewModel<MineState, MineEvent>() {
+class MineViewModel @Inject constructor(val service: MainService, private val eventBus: EventBus): BaseViewModel<MineState, MineEvent>() {
   override val state: StateFlow<MineState>
     get() = reducer.state
   private val reducer = HomeReducer(MineState())

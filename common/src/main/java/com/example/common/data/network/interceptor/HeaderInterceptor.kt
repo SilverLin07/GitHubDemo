@@ -9,12 +9,12 @@ class HeaderInterceptor: Interceptor {
   private val HEADER_AUTHOR = "Authorization"
 
   override fun intercept(chain: Interceptor.Chain): Response {
-    val accessToken = "token ${DataStoreUtils.readStringData(DataStoreUtils.ACCESS_TOKEN, "")}"
-
     val chainBuilder = chain.request().newBuilder()
     with(chainBuilder) {
-      // 添加token
-      addHeader(HEADER_AUTHOR, accessToken)
+      val accessToken = DataStoreUtils.readStringData(DataStoreUtils.ACCESS_TOKEN, "")
+      if (accessToken.isNotBlank()) {
+        addHeader(HEADER_AUTHOR, "token $accessToken")
+      }
     }
     return chain.proceed(chainBuilder.build())
   }

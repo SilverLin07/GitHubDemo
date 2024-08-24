@@ -53,6 +53,12 @@ fun AppPage(navController: NavHostController) {
         MinePage(hiltViewModel(), navController, mPaddingValues)
       }
 
+      composable(route = Router.EDIT_ISSUES_PAGE) {
+        val owner = it.arguments?.getString("owner") ?: ""
+        val repo = it.arguments?.getString("repo") ?: ""
+        EditIssuesPage(hiltViewModel(), navController, owner, repo)
+      }
+
       composable(route = Router.STARRED_PAGE) {
         StarredPage(hiltViewModel(), navController,)
       }
