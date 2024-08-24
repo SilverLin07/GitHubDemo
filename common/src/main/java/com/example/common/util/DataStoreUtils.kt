@@ -14,6 +14,7 @@ import java.io.IOException
 object DataStoreUtils {
   // 通用名称
   const val ACCESS_TOKEN = "ACCESS_TOKEN"
+  const val SETTING_LANGUAGE = "SETTING_LANGUAGE"
 
   private const val preferenceName = "GitHubDemoDataStore"
   private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(preferenceName)

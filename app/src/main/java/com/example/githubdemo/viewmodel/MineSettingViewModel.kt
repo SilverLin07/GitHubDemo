@@ -64,17 +64,15 @@ class MineSettingViewModel @Inject constructor(val service: MainService): BaseVi
     val configuration = Configuration(resources.configuration)
     if (getCurrentLocale(configuration).language == "en") {
       LanguageUtils.applyLanguage(Locale("zh"))
+      DataStoreUtils.saveSyncStringData(DataStoreUtils.SETTING_LANGUAGE, "zh")
     } else {
       LanguageUtils.applyLanguage(Locale("en"))
+      DataStoreUtils.saveSyncStringData(DataStoreUtils.SETTING_LANGUAGE, "en")
     }
   }
 
   private fun getCurrentLocale(configuration: Configuration): Locale {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      configuration.locales.get(0)
-    } else {
-      configuration.locale
-    }
+    return configuration.locales.get(0)
   }
 
   fun logOut() {
