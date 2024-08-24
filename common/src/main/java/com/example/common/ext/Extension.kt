@@ -1,6 +1,10 @@
 package com.example.common.ext
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,6 +20,12 @@ import com.example.common.base.AppSessionUtil
  * @author lincanye (silverever07@gmail.com)
  * @Datetime 2024-08-23 12:49
  */
+fun Context.findActivity(): ComponentActivity? = when (this) {
+  is ComponentActivity -> this
+  is ContextWrapper -> baseContext.findActivity()
+  else -> null
+}
+
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 @OptIn(ExperimentalFoundationApi::class)
 inline fun Modifier.noRippleClickable(milliSec: Int = 500, noinline onLongClick: ()->Unit = {}, crossinline onClick: ()->Unit):

@@ -9,4 +9,5 @@ package com.example.common.data.constants
  */
 object UrlConstants {
   const val GITHUB_URL = "https://www.github.com"
+  const val EXPLORE_URL = "https://github.com/explore"
 }

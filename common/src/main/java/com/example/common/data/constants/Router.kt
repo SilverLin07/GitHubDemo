@@ -5,9 +5,15 @@ object Router {
   const val EXPLORE_PAGE = "EXPLORE_PAGE"
   const val SEARCH_PAGE = "SEARCH_PAGE"
   const val MINE_PAGE = "MINE_PAGE"
+  const val STARRED_PAGE = "STARRED_PAGE"
+
+  const val MINE_SETTING_PAGE = "MINE_SETTING_PAGE"
 
   const val WEB_BASE_PAGE = "common/WebPage"
   const val WEB_PAGE = "common/WebPage/{url}"
+
+  const val IMAGE_BASE_PAGE = "common/ImagePage"
+  const val IMAGE_PAGE = "common/ImagePage/{url}"
 
   fun logOut() {
 //    AppSessionUtil.onLogOut()

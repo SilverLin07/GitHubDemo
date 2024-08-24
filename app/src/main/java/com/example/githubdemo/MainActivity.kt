@@ -1,22 +1,22 @@
 package com.example.githubdemo
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.blankj.utilcode.BuildConfig
+import com.blankj.utilcode.util.LanguageUtils
 import com.example.common.data.constants.Constants
+import com.example.common.ext.findActivity
 import com.example.githubdemo.ui.page.AppPage
 import com.example.githubdemo.ui.theme.GitHubDemoTheme
 import com.example.githubdemo.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
     WindowCompat.setDecorFitsSystemWindows(window, false)
     setContent {
       val navController = rememberNavController()
@@ -40,8 +39,6 @@ class MainActivity : ComponentActivity() {
         viewModel.auth(tokenCode, Constants.GITHUB_CLIENT_ID, Constants.GITHUB_CLIENT_SECRET, Constants.REDIRECT_URL)
       }
     }
-
-    setIntent(null)
   }
 
   override fun onNewIntent(intent: Intent?) {

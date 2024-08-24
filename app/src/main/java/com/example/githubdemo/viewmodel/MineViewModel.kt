@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.base.BaseViewModel
 import com.example.common.base.Reducer
 import com.example.common.data.constants.Constants
+import com.example.common.util.DataStoreUtils
 import com.example.common.util.eventbus.AuthEvent
 import com.example.common.util.eventbus.EventBus
 import com.example.githubdemo.data.network.MainService
 import com.example.githubdemo.model.MineEvent
 import com.example.githubdemo.model.MineState
+import com.example.githubdemo.model.SearchEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -38,8 +40,22 @@ class MineViewModel @Inject constructor(val service: MainService, val eventBus: 
   class HomeReducer(initVal: MineState): Reducer<MineState, MineEvent>(initVal) {
     override fun reduce(oldState: MineState, event: MineEvent) {
       when (event) {
-        else -> {
+        is MineEvent.SetLoading -> {
+          setState(oldState.copy(loading = event.loading))
+        }
+        is MineEvent.SetShowSignIn -> {
+          setState(oldState.copy(showSignIn = event.showSignIn))
+        }
+        is MineEvent.SetRepositoryList -> {
+          event.repositoryList.forEach { it.formatTime() }
 
+          if (event.page == 1) {
+            setState(oldState.copy(repositoryList = event.repositoryList))
+          } else {
+            val newList = oldState.repositoryList?.toMutableList()
+            newList?.addAll(event.repositoryList)
+            setState(oldState.copy(repositoryList = newList))
+          }
         }
       }
     }
@@ -48,11 +64,19 @@ class MineViewModel @Inject constructor(val service: MainService, val eventBus: 
   init {
     viewModelScope.launch {
       eventBus.events.filter { it is AuthEvent }.collectLatest {
-        getUserInfo()
+        getMyRepositories(true)
+        sendEvent(MineEvent.SetShowSignIn(false))
       }
+    }
+
+    if (DataStoreUtils.readStringData(DataStoreUtils.ACCESS_TOKEN, "").isNotBlank()) {
+      getMyRepositories(true)
+    } else {
+      sendEvent(MineEvent.SetShowSignIn(true))
     }
   }
 
+  var page = 0
   // action
   fun launchAuthorizationUrl(context: Context) {
     val intent = CustomTabsIntent.Builder().build()
@@ -72,9 +96,16 @@ class MineViewModel @Inject constructor(val service: MainService, val eventBus: 
       .build()
   }
 
-  private fun getUserInfo() {
-    request({service.loginAccessToken()}, onSuccess = {
-      it
+  fun getMyRepositories(reset: Boolean = false) {
+    if (reset) {
+      page = 0
+    }
+    val pageNumParam = ++page
+    sendEvent(MineEvent.SetLoading(true))
+    request({service.getMyRepos(pageNumParam)}, onSuccess = {
+      sendEvent(MineEvent.SetRepositoryList(it, pageNumParam))
+    }, finally = {
+      sendEvent(MineEvent.SetLoading(false))
     })
   }
 }

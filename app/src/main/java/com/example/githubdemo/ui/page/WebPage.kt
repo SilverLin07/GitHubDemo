@@ -25,9 +25,8 @@ import com.google.accompanist.web.rememberWebViewState
  */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun WebPage(url: String, title: String = "", navController: NavController) {
+fun WebPage(url: String, showTitle: Boolean = true, title: String = "", navController: NavController) {
   val state = rememberWebViewState(url = url)
-  // A custom WebViewClient and WebChromeClient can be provided via subclassing
   val webClient = remember {
     object : AccompanistWebViewClient() {
       override fun onPageStarted(
@@ -40,10 +39,11 @@ fun WebPage(url: String, title: String = "", navController: NavController) {
     }
   }
   ColumnPage {
-    AppTopBarView(title = title, clickReturn = {
-      navController.popBackStack()
-    })
-    // 使用此WebView可能导致上面的部分没有渲染出来（被阻塞），需要对多个机型进行测试
+    if (showTitle) {
+      AppTopBarView(title = title, clickReturn = {
+        navController.popBackStack()
+      })
+    }
     WebView(modifier = Modifier.fillMaxWidth().weight(1f).alpha(0.99f), state = state, onCreated = { webView ->
       webView.settings.javaScriptEnabled = true
     }, client = webClient)

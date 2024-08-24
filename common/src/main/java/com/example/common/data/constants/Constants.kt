@@ -11,4 +11,9 @@ object Constants {
   const val WRITE_TIME_OUT = 30L
 
   const val BASE_URL = "https://api.github.com/"
+
+  const val PAGE_SIZE = 30
+
+  const val SEARCH_FILTER_LANGUAGE = 0
+  const val SEARCH_FILTER_SORT = 1
 }

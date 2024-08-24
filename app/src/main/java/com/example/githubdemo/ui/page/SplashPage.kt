@@ -13,5 +13,4 @@ import com.example.common.data.constants.UrlConstants.GITHUB_URL
  */
 @Composable
 fun SplashPage(navController: NavController) {
-  WebPage(url = GITHUB_URL, navController = navController)
 }

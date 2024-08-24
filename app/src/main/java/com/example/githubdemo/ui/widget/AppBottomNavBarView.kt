@@ -1,6 +1,7 @@
 package com.example.githubdemo.ui.widget
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -59,7 +61,7 @@ fun AppBottomNavBarView(navController: NavHostController, unreadMsgCount: Int = 
           }
         },
         label = {
-          Text(fontSize = 10.sp, text = item.string)
+          Text(fontSize = 10.sp, text = stringResource(id = item.stringResId))
         },
         selected = isSelected,
         onClick = {
@@ -77,8 +79,8 @@ fun AppBottomNavBarView(navController: NavHostController, unreadMsgCount: Int = 
   }
 }
 
-sealed class BottomNavRoute(var routeName: String, var string: String, @DrawableRes var defalutIconId: Int, @DrawableRes var selectIconId: Int) {
-  object Explore: BottomNavRoute(Router.EXPLORE_PAGE, "explore", R.drawable.ic_tab_community_default, R.drawable.ic_tab_community_select)
-  object Search: BottomNavRoute(Router.SEARCH_PAGE, "search", R.drawable.ic_tab_find_default, R.drawable.ic_tab_find_select)
-  object Mine: BottomNavRoute(Router.MINE_PAGE, "mime", R.drawable.ic_tab_mine_default, R.drawable.ic_tab_mine_select)
+sealed class BottomNavRoute(var routeName: String, @StringRes var stringResId: Int, @DrawableRes var defalutIconId: Int, @DrawableRes var selectIconId: Int) {
+  object Explore: BottomNavRoute(Router.EXPLORE_PAGE, R.string.explore, R.drawable.ic_tab_community_default, R.drawable.ic_tab_community_select)
+  object Search: BottomNavRoute(Router.SEARCH_PAGE, R.string.search, R.drawable.ic_tab_find_default, R.drawable.ic_tab_find_select)
+  object Mine: BottomNavRoute(Router.MINE_PAGE, R.string.mine, R.drawable.ic_tab_mine_default, R.drawable.ic_tab_mine_select)
 }

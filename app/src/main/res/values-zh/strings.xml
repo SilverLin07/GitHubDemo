@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GitHubDemo</string>
+    <string name="explore">探索</string>
+    <string name="search">搜索</string>
+    <string name="mine">我的</string>
+    <string name="settings">设置</string>
+    <string name="starred">收藏</string>
+    <string name="logout">退出登录</string>
+    <string name="switch_language">切换语言为英文</string>
+</resources>

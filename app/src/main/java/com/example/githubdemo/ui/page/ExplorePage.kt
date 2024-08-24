@@ -2,8 +2,9 @@ package com.example.githubdemo.ui.page
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import com.example.githubdemo.ui.widget.AppTopBarView
-import com.example.githubdemo.ui.widget.ColumnPage
+import androidx.navigation.NavController
+import com.example.common.data.constants.UrlConstants.EXPLORE_URL
+import com.example.githubdemo.viewmodel.ExploreViewModel
 
 
 /**
@@ -13,9 +14,6 @@ import com.example.githubdemo.ui.widget.ColumnPage
  * @Datetime 2024-08-23 16:55
  */
 @Composable
-fun ExplorePage() {
-  ColumnPage {
-    AppTopBarView("Explore", showReturnBtn = false)
-    Text(text = "Explore Page")
-  }
+fun ExplorePage(viewModel: ExploreViewModel, navController: NavController) {
+  WebPage(url = EXPLORE_URL, showTitle = false, navController = navController)
 }

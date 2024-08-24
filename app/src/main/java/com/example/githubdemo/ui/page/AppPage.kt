@@ -42,21 +42,35 @@ fun AppPage(navController: NavHostController) {
       }
 
       composable(route = Router.EXPLORE_PAGE) {
-        ExplorePage()
+        ExplorePage(hiltViewModel(), navController)
       }
 
       composable(route = Router.SEARCH_PAGE) {
-        SearchPage()
+        SearchPage(hiltViewModel(), navController, mPaddingValues)
       }
 
       composable(route = Router.MINE_PAGE) {
-        MinePage(hiltViewModel(), navController)
+        MinePage(hiltViewModel(), navController, mPaddingValues)
+      }
+
+      composable(route = Router.STARRED_PAGE) {
+        StarredPage(hiltViewModel(), navController,)
+      }
+
+      composable(route = Router.MINE_SETTING_PAGE) {
+        MineSettingPage(hiltViewModel(), navController)
       }
 
       composable(route = Router.WEB_PAGE) {
         val url = it.arguments?.getString("url")
         WebPage(url = url ?: "", navController = navController)
       }
+
+      composable(route = Router.IMAGE_PAGE) {
+        val url = it.arguments?.getString("url")
+        url?.let { imageUrl -> ImagePage(imageUrl, navController) }
+      }
+
     }}
   )
 }
