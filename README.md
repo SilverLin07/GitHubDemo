@@ -12,10 +12,13 @@
 * ViewModel, Lifecycle, Hilt
 * Retrofit, OKHttp3
 * DataStore
+* UI test, compose test, hilt test
 
 # Build and Run
 * 已提供GitHubClientID和GitHubClientSecret，可直接编译运行
 * app连接到GitHub，需要使用VPN
+* 主要的测试用例在package com.example.githubdemo.MyComposeTest中
+* 使用中模拟已登录状态，需要提供自己的github accessToken，赋值给ownValidAccessToken
 
 PS.
 需求有部分不太明确，开发时最好在足够明确的情况下进行
