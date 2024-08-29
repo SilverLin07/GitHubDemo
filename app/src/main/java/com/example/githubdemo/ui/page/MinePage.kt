@@ -2,9 +2,13 @@ package com.example.githubdemo.ui.page
 
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.common.data.constants.Router
 import com.example.common.ext.OnBottomReached
+import com.example.common.ext.noRippleClickable
 import com.example.githubdemo.R
 import com.example.githubdemo.ui.theme.BgSignIn
 import com.example.githubdemo.ui.theme.FontPrimary
@@ -56,30 +62,37 @@ fun MinePage(viewModel: MineViewModel, navController: NavController, paddingValu
   }
 
   ColumnPage(modifier = Modifier.padding(paddingValues)) {
-    AppTopBarViewWithOpt(stringResource(id = R.string.mine), showReturnBtn = false, optId = R.drawable.mine_ic_setting, clickOpt = {
+    AppTopBarViewWithOpt(stringResource(id = R.string.mine), showReturnBtn = false,
+      optId = R.drawable.mine_ic_setting,
+      clickOpt = {
       navController.navigate(route = Router.MINE_SETTING_PAGE)
     }, showOpt = !state.showSignIn)
 
-    if (state.showSignIn) {
-      SignInView {
-        viewModel.launchAuthorizationUrl(navController.context)
-      }
-    }
+    Box {
+      Column(modifier = Modifier.fillMaxWidth()) {
+        if (state.showSignIn) {
+          SignInView {
+            viewModel.launchAuthorizationUrl(navController.context)
+          }
+        }
 
-    state.repositoryList?.let { list ->
-      LazyColumn(state = listState) {
-        items(list) {
-          SearchRepositoryItemView(item = it, onClick =  {
-            navController.navigate("${Router.WEB_BASE_PAGE}/${Uri.encode(it.htmlUrl)}")
-          }, showIssues = true, onClickIssues = {
-            navController.navigate("${Router.EDIT_ISSUES_BASE_PAGE}/${it.owner.login}/${it.name}")
-          })
+        state.repositoryList?.let { list ->
+          LazyColumn(state = listState, modifier = Modifier.testTag("mineLazyColumn")) {
+            items(list) {
+              SearchRepositoryItemView(item = it, onClick = {
+                navController.navigate("${Router.WEB_BASE_PAGE}/${Uri.encode(it.htmlUrl)}")
+              }, showIssues = true, onClickIssues = {
+                navController.navigate("${Router.EDIT_ISSUES_BASE_PAGE}/${it.owner.login}/${it.name}")
+              })
+            }
+          }
         }
       }
+
+      if (state.loading) {
+        LoadingProgress()
+      }
     }
-  }
-  if (state.loading) {
-    LoadingProgress()
   }
 }
 

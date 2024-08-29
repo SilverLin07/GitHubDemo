@@ -9,6 +9,7 @@ import com.example.common.base.BaseViewModel
 import com.example.common.base.Reducer
 import com.example.common.ext.findActivity
 import com.example.common.util.DataStoreUtils
+import com.example.githubdemo.data.bean.UserInfoBean
 import com.example.githubdemo.data.network.MainService
 import com.example.githubdemo.model.MineSettingEvent
 import com.example.githubdemo.model.MineSettingState
@@ -50,12 +51,14 @@ class MineSettingViewModel @Inject constructor(val service: MainService): BaseVi
   }
 
   // action
-  private fun getUserInfo() {
+  fun getUserInfo(callBack: (UserInfoBean) -> Unit = {}, finally: () -> Unit = {}) {
     sendEvent(MineSettingEvent.SetLoading(true))
     request({service.getUserInfo()}, onSuccess = {
       sendEvent(MineSettingEvent.SetUserInfo(it))
+      callBack(it)
     }, finally = {
       sendEvent(MineSettingEvent.SetLoading(false))
+      finally()
     })
   }
 

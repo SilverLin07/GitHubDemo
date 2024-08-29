@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -47,7 +48,7 @@ fun StarredPage(viewModel: StarredViewModel, navController: NavController) {
     }
 
     state.repositoryList?.let { list ->
-      LazyColumn(state = listState) {
+      LazyColumn(state = listState, modifier = Modifier.testTag("starredLazyColumn")) {
         items(list) {
           SearchRepositoryItemView(item = it, onClick =  {
             navController.navigate("${Router.WEB_BASE_PAGE}/${Uri.encode(it.htmlUrl)}")

@@ -16,15 +16,27 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'com.example.githubdemo.HiltTestRunner'
         vectorDrawables {
             useSupportLibrary true
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile rootProject.file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -57,4 +69,17 @@ dependencies {
     implementation libs.hilt
     kapt libs.hilt.compile
     implementation libs.hilt.navigation
+
+    // test
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.ui.test.junit4
+    debugImplementation libs.androidx.ui.tooling
+    debugImplementation libs.androidx.ui.test.manifest
+    testImplementation 'com.google.dagger:hilt-android-testing:2.44'
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44'
+    kaptTest 'com.google.dagger:hilt-compiler:2.44'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
 }

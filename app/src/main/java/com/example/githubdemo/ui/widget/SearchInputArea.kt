@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,7 @@ fun SearchInputArea(
   BasicTextField(singleLine = singleLine, value = if (maxNum > 0 && text.value.codePointCount(0, text.value.length) >= maxNum) text.value.substring(
     0,
     text.value.offsetByCodePoints(0, maxNum)
-  ) else text.value, modifier = modifier.onFocusChanged {
+  ) else text.value, modifier = modifier.testTag("SearchInputArea").onFocusChanged {
     onFocusChange(it.isFocused)
   }, onValueChange = {
     val realTxt = if (maxNum > 0 && it.codePointCount(0, it.length) >= maxNum) it.substring(0, it.offsetByCodePoints(0, maxNum)) else it

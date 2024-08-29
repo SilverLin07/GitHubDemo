@@ -6,6 +6,7 @@ import com.example.common.base.Reducer
 import com.example.common.util.DataStoreUtils
 import com.example.common.util.eventbus.AuthEvent
 import com.example.common.util.eventbus.EventBus
+import com.example.githubdemo.data.bean.RepositoryItem
 import com.example.githubdemo.data.network.MainService
 import com.example.githubdemo.model.MineEvent
 import com.example.githubdemo.model.SearchEvent
@@ -81,7 +82,8 @@ class SearchViewModel @Inject constructor(val service: MainService, private val 
 
   var page = 0
   // action
-  fun search(keyword: String, language: String = "", sort: String = "", reset: Boolean = false, callBack: () -> Unit = {}) {
+  fun search(keyword: String, language: String = "", sort: String = "", reset: Boolean = false, callBack: (List<RepositoryItem>) -> Unit = {},
+             finally: () -> Unit = {}) {
     if (keyword.isBlank()) return
 
     sendEvent(SearchEvent.SetLoading(true))
@@ -103,9 +105,10 @@ class SearchViewModel @Inject constructor(val service: MainService, private val 
     }
     request({service.searchRepositories(query, sort = sortStr, page = pageNumParam)}, onSuccess = {
       sendEvent(SearchEvent.SetRepositoryList(it.items, pageNumParam))
-      callBack()
+      callBack(it.items)
     }, finally = {
       sendEvent(SearchEvent.SetLoading(false))
+      finally()
     })
   }
 

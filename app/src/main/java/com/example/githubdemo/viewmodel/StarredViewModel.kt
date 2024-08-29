@@ -10,6 +10,7 @@ import com.example.common.data.constants.Constants
 import com.example.common.util.DataStoreUtils
 import com.example.common.util.eventbus.AuthEvent
 import com.example.common.util.eventbus.EventBus
+import com.example.githubdemo.data.bean.RepositoryItem
 import com.example.githubdemo.data.network.MainService
 import com.example.githubdemo.model.StarredEvent
 import com.example.githubdemo.model.StarredState
@@ -66,7 +67,7 @@ class StarredViewModel @Inject constructor(val service: MainService, val eventBu
   var page = 0
 
   // action
-  fun getStarredRepositories(reset: Boolean = false) {
+  fun getStarredRepositories(reset: Boolean = false, callBack: (List<RepositoryItem>) -> Unit = {}, finally: () -> Unit = {}) {
     if (reset) {
       page = 0
     }
@@ -74,8 +75,10 @@ class StarredViewModel @Inject constructor(val service: MainService, val eventBu
     sendEvent(StarredEvent.SetLoading(true))
     request({service.getMyStarred(pageNumParam)}, onSuccess = {
       sendEvent(StarredEvent.SetRepositoryList(it, pageNumParam))
+      callBack(it)
     }, finally = {
       sendEvent(StarredEvent.SetLoading(false))
+      finally()
     })
   }
 }

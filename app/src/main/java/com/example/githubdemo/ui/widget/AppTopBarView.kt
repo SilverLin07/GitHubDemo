@@ -1,6 +1,8 @@
 package com.example.githubdemo.ui.widget
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -70,7 +73,7 @@ fun AppTopBarViewWithOpt(
   title: String = "",
   showReturnBtn: Boolean = true,
   clickReturn: () -> Unit = {},
-  optId: Int,
+  optId: Int = 0,
   subOptId: Int = 0,
   subTxt: String = "",
   clickOpt: () -> Unit = {},
@@ -124,22 +127,21 @@ fun AppTopBarViewWithOpt(
     }
     if (showOpt) {
       if (subTxt.isNotEmpty()) {
-        TextButton(content = subTxt, modifier = Modifier
+        TextButton(content = subTxt, modifier = Modifier.testTag("optIcon")
           .width(60.dp)
           .height(30.dp)
           .align(Alignment.CenterEnd), radius = 4.dp, fontSize = 16.sp) {
           clickOpt()
         }
-      } else {
-        Icon(
-          modifier = Modifier
+      } else if (optId != 0) {
+        Image(
+          modifier = Modifier.testTag("optIcon")
             .align(Alignment.CenterEnd)
-            .noRippleClickable {
+            .clickable {
               clickOpt()
             },
           painter = painterResource(id = optId),
-          tint = Color.Black,
-          contentDescription = null
+          contentDescription = "optIcon"
         )
       }
     }

@@ -41,6 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -122,7 +123,7 @@ fun SearchPage(viewModel: SearchViewModel, navController: NavController, padding
 
     Box {
       state.repositoryList?.let { list ->
-        LazyColumn(state = listState) {
+        LazyColumn(state = listState, modifier = Modifier.testTag("searchLazyColumn")) {
           items(list) {
             SearchRepositoryItemView(item = it, onClick = {
               navController.navigate("${Router.WEB_BASE_PAGE}/${Uri.encode(it.htmlUrl)}")

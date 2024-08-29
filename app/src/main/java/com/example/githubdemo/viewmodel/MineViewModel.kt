@@ -10,6 +10,7 @@ import com.example.common.data.constants.Constants
 import com.example.common.util.DataStoreUtils
 import com.example.common.util.eventbus.AuthEvent
 import com.example.common.util.eventbus.EventBus
+import com.example.githubdemo.data.bean.RepositoryItem
 import com.example.githubdemo.data.network.MainService
 import com.example.githubdemo.model.MineEvent
 import com.example.githubdemo.model.MineState
@@ -96,7 +97,7 @@ class MineViewModel @Inject constructor(val service: MainService, private val ev
       .build()
   }
 
-  fun getMyRepositories(reset: Boolean = false) {
+  fun getMyRepositories(reset: Boolean = false, callBack: (List<RepositoryItem>) -> Unit = {}, finally: () -> Unit = {}) {
     if (reset) {
       page = 0
     }
@@ -104,8 +105,10 @@ class MineViewModel @Inject constructor(val service: MainService, private val ev
     sendEvent(MineEvent.SetLoading(true))
     request({service.getMyRepos(pageNumParam)}, onSuccess = {
       sendEvent(MineEvent.SetRepositoryList(it, pageNumParam))
+      callBack(it)
     }, finally = {
       sendEvent(MineEvent.SetLoading(false))
+      finally()
     })
   }
 }
